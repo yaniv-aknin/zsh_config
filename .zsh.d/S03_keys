@@ -1,0 +1,28 @@
+# make backward-delete-char work properly
+export WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
+
+quote-current-word () {
+        setopt localoptions unset noshwordsplit noksharrays
+        local lbuf=$LBUFFER rbuf=$RBUFFER last=$LASTWIDGET
+        if [[ $last != $WIDGET ]]
+        then
+                local oldcontext=$curcontext
+                local curcontext="${WIDGET}:${${curcontext:-:::}#*:}"
+                zle complete-word
+                curcontext=$oldcontext 
+        fi
+}
+
+
+autoload -U quote-current-word
+zle -N quote-current-word
+bindkey "^[OP" quote-current-word
+
+
+
+################ KEY BINDING #####################
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
+bindkey '\e[3~' delete-char
+bindkey '^G' backward-kill-line
+bindkey '^z' undo

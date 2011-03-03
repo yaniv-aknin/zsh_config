@@ -1,0 +1,2 @@
+# Coloring for python's nose test-running tool
+export NOSE_REDNOSE=1

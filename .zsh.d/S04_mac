@@ -1,0 +1,27 @@
+if [[ $(uname) == "Darwin" ]]; then
+    # locale
+    export LC_ALL=en_US.UTF-8
+    
+    #bind tilda
+    eval "insert-key-tilda () { LBUFFER+='~'; }"
+    zle -N insert-key-tilda
+    bindkey "\M-B\M-1" insert-key-tilda
+    
+    #bind backtick
+    eval "insert-key-backtick () { LBUFFER+='\`'; }"
+    zle -N insert-key-backtick
+    bindkey "\M-B\xa7" insert-key-backtick
+
+    #alias
+    function eject
+    {
+        if [ $@ ]; then
+            sudo hdiutil eject $@  
+        else
+            drutil tray eject
+        fi
+    }
+
+fi
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export MANPATH=$MANPATH:/opt/local/share/man:/usr/local/man

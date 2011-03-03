@@ -1,0 +1,8 @@
+#! /bin/zsh
+
+if [[ "$TERM" != "dumb" ]]; then
+    source "$ZSH_DIR/_S67_prompt"
+else
+    unsetopt zle && PS1='$ '
+fi
+

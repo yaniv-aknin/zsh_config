@@ -1,0 +1,8 @@
+parse_git_branch() {
+        local git_head_file;
+        git_head_file="$(walkup .git/HEAD)"
+        if [ -n "$git_head_file" ]; then
+             
+                cat $git_head_file | sed 's/ref: refs\/heads\///'
+        fi
+}

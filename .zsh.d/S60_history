@@ -1,0 +1,6 @@
+################ HISTORY #########################
+HISTFILESIZE=200000
+HISTSIZE=$HISTFILESIZE
+SAVEHIST=$HISTFILESIZE
+HISTFILE=~/.zsh_history
+setopt share_history

@@ -1,0 +1,25 @@
+#################################### Quote current arg #############################
+#takes a alt-number argument to select type of quoting.
+autoload -U modify-current-argument
+
+
+function _quote_word()
+{
+    modify-current-argument '\"${(q)ARG}\"'
+}
+
+# function _quote_word()
+# {
+#   q=qqqq
+#   modify-current-argument '${('$q[1,${NUMERIC:-1}]')ARG}'
+# }
+zle -N _quote_word
+
+function _unquote_word()
+{
+  modify-current-argument '${(Q)ARG}'
+}
+zle -N _unquote_word
+
+bindkey "^Xq" _quote_word
+bindkey "^XQ" _unquote_word
