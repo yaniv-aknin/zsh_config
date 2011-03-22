@@ -1,3 +1,5 @@
 #! /bin/sh
 
-cp -rf .zsh.d .zshrc ~
+rsync -avP .zshrc ~/.zshrc
+rsync -avP --delete .zsh.d/ ~/.zsh.d/
+
