@@ -47,7 +47,7 @@ function _get_git_rprompt {
 
 function _rprompt_dir {
     local short
-    short="${PWD/$HOME/~}"
+    short="%{$fg[green]%}${PWD/$HOME/~}%{%b%s%u$reset_color%}"
     echo -n "$short$(_get_git_rprompt)"
 }
 
@@ -73,30 +73,9 @@ if [ $UID -eq 0 ]; then
     RPROMPT="$rst%{$fg[red]%}(%B%{$fg[red]%}%~%b%{$fg[red]%})$rst "
 else
     case $HOST in
-        blackbook*)
-            lprompt '[]' bold magenta
-            rprompt '()' yellow white
-            ;;
-        whitebook*)
-            lprompt '[]' bold green
-            rprompt '()' yellow white
-            ;;
-        pro*)
-            lprompt '[]' bold cyan
-            rprompt '()' yellow white
-            ;;
-        tpro*)
-            lprompt '[]' bold red
-            rprompt '()' red white
-            ;;
-
-        *vm)
-            lprompt '[]' bold yellow
-            rprompt '()' yellow white
-            ;;
         *)
-            lprompt '{}' white white
-            rprompt '()' white white
+            lprompt '{}' green green
+            rprompt '()' yellow white
             ;;
     esac
 fi
