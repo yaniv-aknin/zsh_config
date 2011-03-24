@@ -22,11 +22,12 @@ if [[ $(uname) == "Darwin" ]]; then
         fi
     }
 
-fi
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export MANPATH=$MANPATH:/opt/local/share/man:/usr/local/man
+    export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+    export MANPATH=$MANPATH:/opt/local/share/man:/usr/local/man
+    
+    #macports-installed python
+    for pythonver in /opt/local/Library/Frameworks/Python.framework/Versions/*; do
+        export PATH=$PATH:$pythonver/bin
+    done
 
-#macports-installed python
-for pythonver in /opt/local/Library/Frameworks/Python.framework/Versions/*; do
-    export PATH=$PATH:$pythonver/bin
-done
+fi
