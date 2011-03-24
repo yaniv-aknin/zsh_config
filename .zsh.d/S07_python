@@ -1,2 +1,10 @@
 # Coloring for python's nose test-running tool
 export NOSE_REDNOSE=1
+
+python_module_dir() {
+    python -c "import $1, os; print os.path.dirname($1.__file__)"
+}
+
+cdpy() {
+    cd "$(python_module_dir $1)"
+}
