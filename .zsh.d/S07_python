@@ -7,4 +7,16 @@ python_module_dir() {
 
 cdpy() {
     cd "$(python_module_dir $1)"
+
+pyenv() {
+    PROMPT="%{$bg[red]%}VENV$rst$PROMPT"
+    virtualenv --distribute $1
+    cd $1;
+    source bin/activate
+    easy_install ipython
+}
+
+pydeactivate() {
+    deactivate
+    exec env -i zsh
 }
