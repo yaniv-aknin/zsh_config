@@ -9,14 +9,27 @@ cdpy() {
     cd "$(python_module_dir $1)"
 }
 pyenv() {
+
+    local env_path;
+
+    if [ -n "$1" ]; then
+       env_path="$1";
+    else
+       env_path=/tmp/pyenv   
+    fi
     PROMPT="%{$bg[red]%}VENV$rst$PROMPT"
-    virtualenv --distribute $1
-    cd $1;
+    virtualenv --distribute $env_path
+    cd $env_path;
     source bin/activate
     easy_install ipython
 }
 
 pydeactivate() {
     deactivate
-    exec env -i zsh;
+    exec zsh;
+}
+
+mkpkg() {
+    mkdir -p $1 
+    echo >> $1/__init__.py
 }
