@@ -15,20 +15,23 @@ pyenv() {
     if [ -n "$1" ]; then
        env_path="$1";
     else
-       env_path=/tmp/pyenv   
+       env_path=~/.pyenv
     fi
     OLD_PROMPT=$PROMPT
     virtualenv --distribute $env_path
-    cd $env_path;
+    pushd $env_path >/dev/null;
     source bin/activate
     PROMPT="%{$bg[magenta]%}${env_path:t}$rst$OLD_PROMPT"
     export PATH
     easy_install ipython
     easy_install nose
+    alias nosetests="$env_path/bin/nosetests"
+    popd >/dev/null;
 }
 
 pydeactivate() {
     deactivate
+    unalias nosetests
     exec zsh;
 }
 
