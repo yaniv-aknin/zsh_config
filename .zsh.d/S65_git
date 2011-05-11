@@ -7,4 +7,5 @@ alias gsu="git submodule update --init"
 alias gd="git diff --color --ignore-space-at-eol"
 alias gb="git branch --color -v"
 alias gg="git grep"
+alias gpr="git pull --rebase"
 
