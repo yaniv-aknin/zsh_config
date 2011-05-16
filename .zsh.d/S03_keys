@@ -29,3 +29,13 @@ bindkey '\e[1;5C' forward-word
 
 bindkey '^G' backward-kill-line
 bindkey '^z' undo
+
+eval "insert-cdup () { LBUFFER+='cd ..'; zle accept-line }"
+zle -N insert-cdup
+bindkey '\e[1;5A' insert-cdup
+
+eval "insert-popd () { LBUFFER+='popd'; zle accept-line }"
+zle -N insert-popd
+bindkey "\e[1;5B" insert-popd
+bindkey "^P" insert-popd
+
