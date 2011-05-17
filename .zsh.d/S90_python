@@ -10,7 +10,7 @@ cdpy() {
 }
 
 mkpkg() {
-    mkdir -p $1 
+    mkdir -p $1
     echo >> $1/__init__.py
 }
 
@@ -25,16 +25,24 @@ function venv_prompt() {
 }
 
 ### virtualenv
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/share/python/virtualenv
 VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
 if [ -e $VIRTUALENV_WRAPPER ]; then
     source $VIRTUALENV_WRAPPER
     export WORKON_HOME="$HOME/.virtualenvs"
     export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
-    if [ ! -d $WORKON_HOME/$GLOBAL_VIRTUALENV_NAME ]; then 
+    if [ ! -d $WORKON_HOME/$GLOBAL_VIRTUALENV_NAME ]; then
+        echo "I've detected you don't have a global virtualenv. Setting up..."
         mkvirtualenv $GLOBAL_VIRTUALENV_NAME
         echo "venv_prompt" > $VIRTUALENVWRAPPER_HOOK_DIR/postactivate
+        workon $GLOBAL_VIRTUALENV_NAME
+        easy_install virtualenv
+        easy_install virtualenvwrapper
     fi
-    workon $GLOBAL_VIRTUALENV_NAME
+    # workon is not fast enough, so we do this directly
+    source $WORKON_HOME/$GLOBAL_VIRTUALENV_NAME/bin/activate
+    source $WORKON_HOME/postactivate
+
     function _complete__workon { reply=(`workon`); }
     compctl -K _complete__workon workon
 fi
