@@ -1,4 +1,5 @@
 setopt autopushd
+
 autoload zmv
 
 ## Named directories
