@@ -27,6 +27,9 @@ bindkey '\e[3~' delete-char
 bindkey '\e[1;5D' backward-word
 bindkey '\e[1;5C' forward-word
 
+# you have to make iTerm send this sequence if you want to use it....
+bindkey '\e?' backward-delete-word
+
 bindkey '^G' backward-kill-line
 bindkey '^z' undo
 
