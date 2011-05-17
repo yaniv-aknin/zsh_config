@@ -26,6 +26,6 @@ if [[ $(uname) == "Darwin" ]]; then
     export MANPATH=$MANPATH:/usr/local/share/man
 
     # python that comes from brew
-    export PATH=$PATH:/usr/local/share/python
+    #export PATH=/usr/local/share/python:$PATH
 
 fi

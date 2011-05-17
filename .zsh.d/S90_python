@@ -1,0 +1,40 @@
+# Coloring for python's nose test-running tool
+export NOSE_REDNOSE=1
+
+python_module_dir() {
+    python -c "import $1, os; print os.path.dirname($1.__file__)"
+}
+
+cdpy() {
+    cd "$(python_module_dir $1)"
+}
+
+mkpkg() {
+    mkdir -p $1 
+    echo >> $1/__init__.py
+}
+
+
+GLOBAL_VIRTUALENV_NAME="__global__"
+
+function venv_prompt() {
+    reset_prompt;
+    if [[ "${VIRTUAL_ENV:t}" != "$GLOBAL_VIRTUALENV_NAME" ]]; then
+        PS1="%{$bg[magenta]%}${VIRTUAL_ENV:t}$rst$PS1"
+    fi
+}
+
+### virtualenv
+VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
+if [ -e $VIRTUALENV_WRAPPER ]; then
+    source $VIRTUALENV_WRAPPER
+    export WORKON_HOME="$HOME/.virtualenvs"
+    export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
+    if [ ! -d $WORKON_HOME/$GLOBAL_VIRTUALENV_NAME ]; then 
+        mkvirtualenv $GLOBAL_VIRTUALENV_NAME
+        echo "venv_prompt" > $VIRTUALENVWRAPPER_HOOK_DIR/postactivate
+    fi
+    workon $GLOBAL_VIRTUALENV_NAME
+    function _complete__workon { reply=(`workon`); }
+    compctl -K _complete__workon workon
+fi
