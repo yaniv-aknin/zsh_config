@@ -45,4 +45,9 @@ if [ -e $VIRTUALENV_WRAPPER ]; then
 
     function _complete__workon { reply=(`workon`); }
     compctl -K _complete__workon workon
+
+    function pyisolate {
+       rm -rf $WORKON_HOME/isolated
+       mkvirtualenv isolated
+    }
 fi
