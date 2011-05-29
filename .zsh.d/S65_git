@@ -1,4 +1,4 @@
-export GIT_EDITOR=emacs
+export GIT_EDITOR=/usr/bin/vim
 
 ########### GIT ALIASES ##################
 alias gs="git status"
