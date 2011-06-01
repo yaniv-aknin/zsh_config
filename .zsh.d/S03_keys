@@ -1,23 +1,5 @@
 # make backward-delete-char work properly
-export WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
-
-quote-current-word () {
-        setopt localoptions unset noshwordsplit noksharrays
-        local lbuf=$LBUFFER rbuf=$RBUFFER last=$LASTWIDGET
-        if [[ $last != $WIDGET ]]
-        then
-                local oldcontext=$curcontext
-                local curcontext="${WIDGET}:${${curcontext:-:::}#*:}"
-                zle complete-word
-                curcontext=$oldcontext 
-        fi
-}
-
-
-autoload -U quote-current-word
-zle -N quote-current-word
-bindkey "^[OP" quote-current-word
-
+autoload -U modify-current-argument
 
 
 ################ KEY BINDING #####################
@@ -47,4 +29,51 @@ bindkey "\e[1;6C" insert-cycledright
 eval "insert-popd () { LBUFFER+='popd'; zle accept-line }"
 zle -N insert-popd
 bindkey "^P" insert-popd
+
+# word quoting
+function _quote_word()
+{
+    modify-current-argument '\"${(q)ARG}\"'
+}
+
+zle -N _quote_word
+
+function _unquote_word()
+{
+  modify-current-argument '${(Q)ARG}'
+}
+zle -N _unquote_word
+
+bindkey "^Xq" _quote_word
+bindkey "^XQ" _unquote_word
+
+# Function keys
+
+eval "zle-no-op() {}"
+zle -N zle-no-op
+
+#F1
+bindkey '^[OP' zle-no-op
+#F2
+bindkey '^[OQ' zle-no-op
+#F3
+bindkey '^[OR' zle-no-op
+#F4
+bindkey '^[OS' zle-no-op
+#F5
+bindkey '\e[[16~' zle-no-op
+#F6
+bindkey '\e[[17~' zle-no-op
+#F7
+bindkey '\e[[18~' zle-no-op
+#F8
+bindkey '\e[[19~' zle-no-op
+#F9
+bindkey '\e[[20~' zle-no-op
+#F10
+bindkey '\e[[21~' zle-no-op
+#F11
+bindkey '\e[[23~' zle-no-op
+#F12
+bindkey '\e[[24~' zle-no-op
 
