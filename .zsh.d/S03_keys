@@ -81,7 +81,7 @@ eval "f8() {zle push-line;LBUFFER+='f8';zle accept-line}"
 zle -N f8
 bindkey '^[[19~' f8
 #F9
-eval "f9() {zle push-line;LBUFFER+='nosetests -x';zle accept-line}"
+eval "f9() {zle push-line;LBUFFER+='zsh_build';zle accept-line}"
 zle -N f9
 bindkey '^[[20~' f9
 #F10

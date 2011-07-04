@@ -1,0 +1,9 @@
+function zsh_build() {
+    if [ -e "setup.py" ]; then
+        nosetests -x
+    elif [ -e "SConstruct" ]; then
+        scons
+    elif [ -e "Makefile" ]; then
+        make
+    fi
+}
