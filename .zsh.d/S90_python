@@ -28,7 +28,10 @@ function venv_prompt() {
 export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/share/python/virtualenv
 VIRTUALENV_WRAPPER=/usr/local/share/python/virtualenvwrapper.sh
 if [ -e $VIRTUALENV_WRAPPER ]; then
+    __zsh_version="$ZSH_VERSION"
+    unset ZSH_VERSION # virtualenv_wrapper installs completions that hang everything...
     source $VIRTUALENV_WRAPPER
+    export ZSH_VERSION=$__zsh_version
     export WORKON_HOME="$HOME/.virtualenvs"
     export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
     if [ ! -d $WORKON_HOME/$GLOBAL_VIRTUALENV_NAME ]; then
