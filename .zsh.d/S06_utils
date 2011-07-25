@@ -1,0 +1,4 @@
+alias wzmv="noglob zmv -Wv"
+function logify() {
+    gawk '{ print strftime("%Y-%m-%dT%H:%M:%S"), $0; fflush(); }'
+}
