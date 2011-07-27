@@ -54,3 +54,6 @@ if [ -e $VIRTUALENV_WRAPPER ]; then
        mkvirtualenv isolated
     }
 fi
+
+function _complete__fab { reply=(`fab -l -F short`); }
+compctl -K _complete__fab fab
