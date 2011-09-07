@@ -1,0 +1,52 @@
+mknginxconf() {
+    tempdir="$1"
+    port="$2"
+    cat << EOF > "$tempdir/.nginx.conf"
+pid "$tempdir/.nginx.pid";
+events { worker_connections  1024; }
+http {
+    default_type  application/octet-stream;
+    server {
+        access_log "$tempdir/nginx.log";
+        listen "$port" default;
+        location / {
+            root   "$tempdir";
+        }
+    }
+    types { text/html html htm shtml; text/css css; text/xml xml; application/x-javascript js; image/jpeg jpeg jpg;
+            image/png png; application/x-shockwave-flash swf; video/mp4 mp4; }
+}
+EOF
+}
+
+freeport() {
+    while true; do
+        port=$(($RANDOM+1024))
+        if nc -z localhost $port > /dev/null; then continue; fi
+        echo $port
+        break
+    done
+}
+
+playground() {
+    tempdir=$(mktemp -d /tmp/playground.XXXXXX)
+    if [ $? -ne 0 ]; then echo "$0: can't create temporary directory"; return 1; fi
+    cd "$tempdir"
+    cp ~/.zsh.d/static/playground/* .
+    port="$(freeport)"
+    mknginxconf "$tempdir" "$port"
+    alias nginx='nginx -c "$tempdir"/.nginx.conf'
+    nginx -c "$tempdir"/.nginx.conf
+    if ! which open > /dev/null; then
+        echo "direct your browser at http://localhost:$port and hit [enter]"
+        read
+    else
+        open -g "http://localhost:$port"
+    fi
+    vim "$tempdir"/index.html
+    nginx -c "$tempdir"/.nginx.conf -s stop
+    cd -
+    echo "Hit [enter] to destroy your playground ($tempdir)"
+    read
+    rm -fr "$tempdir"
+}
