@@ -1,3 +1,6 @@
+# don't use gay command line syntax! see compat(5)
+export COMMAND_MODE=unix2003
+
 setopt autopushd
 
 autoload zmv
@@ -10,3 +13,15 @@ alias mv="mv -i"
 
 ## word chars - make kill-word compatible with path components, etc.
 export WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
+
+# easy zshrc reload
+alias reloadzshrc='source ~/.zshrc'
+
+# make sure vi/vim is always the editor
+if [ -z "$EDITOR" ]; then
+    if [ ! which vim > /dev/null ]; then
+        export EDITOR=vi
+    else
+        export EDITOR=vim
+    fi
+fi
