@@ -1,54 +1,27 @@
-# make backward-delete-char work properly
-autoload -U modify-current-argument
+# if you're not familiar/forgot the ZLE binding vi-quoted-insert, then you probably want to read:
+# http://stackoverflow.com/questions/1903412/bindkey-with-zsh-on-mac
+# this keybinding is usually associated with ^v, however, this file binds ^v to something else
 
+# do not use vi mode for zle despite EDITOR=vim
+bindkey -e
 
-################ KEY BINDING #####################
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
-bindkey '\e[3~' delete-char
-bindkey '\e[1;5D' backward-word
-bindkey '\e[1;5C' forward-word
+autoload edit-command-line
+bindkey ^v edit-command-line
+zle -N edit-command-line
 
-# you have to make iTerm send this sequence if you want to use it....
-bindkey '\e?' backward-delete-word
-
-bindkey '^G' backward-kill-line
+bindkey '^[[H' beginning-of-line
+bindkey '^[[E' end-of-line
+bindkey '^[[3~' delete-char
 bindkey '^z' undo
-
-eval "insert-cdup () { LBUFFER+='cd ..'; zle accept-line }"
-zle -N insert-cdup
-bindkey '\e[1;6A' insert-cdup
 
 eval "insert-cycledleft () { zle push-line; LBUFFER='pushd -q +1'; zle accept-line }"
 zle -N insert-cycledleft
-bindkey "\e[1;6D" insert-cycledleft
+bindkey "^[[1;2D" insert-cycledleft
 eval "insert-cycledright () { zle push-line; LBUFFER='pushd -q -0'; zle accept-line }"
 zle -N insert-cycledright
-bindkey "\e[1;6C" insert-cycledright
-
-eval "insert-popd () { LBUFFER+='popd'; zle accept-line }"
-zle -N insert-popd
-bindkey "^P" insert-popd
-
-# word quoting
-function _quote_word()
-{
-    modify-current-argument '\"${(q)ARG}\"'
-}
-
-zle -N _quote_word
-
-function _unquote_word()
-{
-  modify-current-argument '${(Q)ARG}'
-}
-zle -N _unquote_word
-
-bindkey "^Xq" _quote_word
-bindkey "^XQ" _unquote_word
+bindkey "^[[1;2C" insert-cycledright
 
 # Function keys
-
 eval "zle-no-op() {}"
 zle -N zle-no-op
 
