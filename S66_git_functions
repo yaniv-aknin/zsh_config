@@ -1,8 +1,28 @@
+gamend() {
+    [ -n "$(git status --porcelain 2>/dev/null)" ] && GIT_EDITOR=true git commit --amend -a
+}
+
 parse_git_branch() {
-        local git_head_file;
-        git_head_file="$(walkup .git/HEAD 2>/dev/null)"
-        if [ -n "$git_head_file" ]; then
-             
-                cat $git_head_file | sed 's/ref: refs\/heads\///'
-        fi
+    if [ -z "$_git_status_cache" ]; then
+        local _git_status_cache="$(git status -sb 2> /dev/null)"
+    fi
+    echo "$_git_status_cache" | head -1 | perl -pe 's/^## (\w+).*/\1/'
+}
+
+gll() {
+    branch=$(parse_git_branch)
+    if [ -z "$branch" ]; then
+        return 1
+    fi
+    if git rev-parse origin/$branch 2> /dev/null > /dev/null; then
+        gl origin/${branch}..HEAD --oneline "$@"
+    else
+        gl origin/master..HEAD --oneline "$@"
+    fi
+}
+alias gllf='gll --name-only'
+
+gedm() {
+    vi -p $(git status --porcelain | cut -c2- | grep ^M | cut -c3- | tr '\n' ' ')
+    
 }
