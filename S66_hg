@@ -1,0 +1,24 @@
+########### GIT ALIASES ##################
+alias hs="hg status"
+alias hsl="hg attic"
+#alias gsu="git submodule update --init"
+alias hd="hg diff"
+#alias hb="hg branch"
+alias hll="hg -q out --template '{node|short} {date|isodate} {desc}\n'"
+alias hllf='hg -q out --style ~/.hg.d/styles/multiline'
+#alias gc='git clean -X -f -q'
+
+parse_hg_branch() {
+        if ! HG_ROOT=$(fast_hg_root) 2> /dev/null; then
+            # not an HG repository, quit
+            return
+        fi
+        BOOKMARK=$(cat "$HG_ROOT"/.hg/bookmarks.current 2> /dev/null)
+        if [ -n "$BOOKMARK" ]; then
+            # have a current bookmark, display that
+            echo $BOOKMARK
+            return
+        fi
+        # display the current branch or 'default'
+        cat "$HG_ROOT"/.hg/branch 2> /dev/null || echo 'default'
+}
