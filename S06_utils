@@ -2,3 +2,20 @@ alias wzmv="noglob zmv -Wv"
 function logify() {
     gawk '{ print strftime("%Y-%m-%dT%H:%M:%S"), $0; fflush(); }'
 }
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias top='top -o cpu'
+alias rmpyc='find . -type f -name "*.pyc" -print0 | xargs -0 rm'
+
+srcgrep() {
+    find . ! -path '*/.git/*' \
+           ! -path '*myTrash*' \
+           ! -path '*deps*' \
+           \( -name '*.py' -or -name '*.c' -or -name '*.html' -or -name '*.json' \) \
+           -type f -exec egrep -I --color=auto -H "$@" {} \;                                                            
+}
+
+srcgreped() {
+    vim -p $(srcgrep "$@" | cut -f1 -d: | sort -u)
+}
