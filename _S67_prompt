@@ -10,6 +10,32 @@ colors
 rst="%{%b%s%u$reset_color%}"
 bgc="%{%(?.$rst.%S)%}"
 
+function _lprompt_env {
+    local active="$(active_virtualenv)"
+    local enclosing="$(enclosing_virtualenv)"
+    if [ -z "$active" -a -z "$enclosing" ]; then
+        # no active virtual env, no enclosing virtualenv, just leave
+        return
+    fi
+    if [ -z "$active" ]; then
+        local color=white
+        local text="$enclosing"
+    else
+        if [ -z "$enclosing" ]; then
+            local color=yellow
+            local text="$active"
+        elif [ "$enclosing" = "$active" ]; then
+            local color=green
+            local text="$active"
+        else
+            local color=red
+            local text="$active":"$enclosing"
+        fi
+    fi
+    #local result="%{$fg[$color]%}${text}%{$rst%} "
+    local result="%{$fg[$color]%}${text}$rst "
+    echo -n $result
+}
 
 function lprompt {
     local col1 col2 ch1 ch2
@@ -18,37 +44,52 @@ function lprompt {
     ch1=$col1${1[1]}
     ch2=$col1${1[2]}
 
-    local git_b git_s col_b col_s
+    local _env='$(_lprompt_env)'
+
+    local col_b col_s
     col_b="%{$fg[green]%}"
     col_s="%{$fg[red]%}"
-    
+
     PROMPT="\
 $bgc$ch1\
+$_env\
 %{$fg_bold[white]%}%m:\
 $bgc$col2%B%1~%b\
 $ch2$rst \
 $col2%#$rst "
 }
 
-function _get_git_rprompt {
-    local git_branch
-    local returned
-    local color
-
-    returned=""
-    
-    git_branch="$(parse_git_branch)"
-    if [ -n "$git_branch" ]; then
-        returned="$returned:$git_branch"
+function _format_git_position {
+    local git_position_ahead="$(echo $_git_status_cache | head -1 | egrep -o "ahead [0-9]+" | cut -f2 -d' ')"
+    local git_position_behind="$(echo $_git_status_cache | head -1 | egrep -o "behind [0-9]+" | cut -f2 -d' ')"
+    if [ -n "$git_position_ahead" ]; then
+        local position=" %{$fg[green]%}+$git_position_ahead$rst"
     fi
-    
-    echo -n "$returned"
+    if [ -n "$git_position_behind" ]; then
+        if [ -z "$position" ]; then
+            local position=" %{$fg[red]%}-$git_position_behind$rst"
+        else
+            local position="$position%{$fg[white]%}/$rst%{$fg[red]%}-$git_position_behind$rst"
+        fi
+    fi
+    if [ "$(echo "$_git_status_cache" | wc -l)" -gt 1 ]; then
+        local position="$position %{$fg[yellow]%}!$rst"
+    fi
+    echo -n $position
 }
 
-function _rprompt_dir {
-    local short
-    short="%{$fg[green]%}${PWD/$HOME/~}%{%b%s%u$reset_color%}"
-    echo -n "$short$(_get_git_rprompt)"
+function _rprompt_dvcs {
+    _git_status_cache="$(git status -sb 2> /dev/null)"
+    if [ -n "$_git_status_cache" ]; then
+        local result=":%{$fg[blue]%}$(parse_git_branch)$rst$(_format_git_position)"
+        unset _git_status_cache
+    else
+        local hg_branch="($(parse_hg_branch))"
+        if [ "()" != "$hg_branch" ]; then
+            local result=":%{$fg[green]%}$hg_branch$rst"
+        fi
+    fi
+    echo -n $result
 }
 
 function rprompt {
@@ -58,19 +99,21 @@ function rprompt {
     ch1=$col1${1[1]}
     ch2=$col1${1[2]}
 
-    local _dir='$(_rprompt_dir)'
+    local _dvcs='$(_rprompt_dvcs)'
 
     RPROMPT="\
 $rst$ch1\
 $col2%*:%n\
-$col1:\
-$col2%B$_dir%b\
+${col1}\
+$col2%B${_dvcs}%b\
 $ch2$rst"
 }
 
 if [ $UID -eq 0 ]; then
     PROMPT="$bgc%{%B$fg[yellow]%}[%{$fg[red]%}%n %m%{$fg[yellow]%}]$rst "
     RPROMPT="$rst%{$fg[red]%}(%B%{$fg[red]%}%~%b%{$fg[red]%})$rst "
+elif [ -f ~/.zsh.prompt ]; then
+    source ~/.zsh.prompt
 else
     case $HOST in
         *)
