@@ -1,0 +1,51 @@
+#!/bin/zsh
+
+VIRTUAL_ENV_DISABLE_PROMPT=True
+
+function active_virtualenv() {
+    if [ -z "$VIRTUAL_ENV" ]; then
+        # not in a virtualenv
+        return
+    fi
+
+    basename "$VIRTUAL_ENV"
+}
+
+function enclosing_virtualenv() {
+    if ! which walkup > /dev/null; then
+        return
+    fi
+    virtualenv="$(walkup bin/activate)"
+    if [ -z "$virtualenv" ]; then
+        # not in a virtualenv
+        return
+    fi
+
+    basename $(grep VIRTUAL_ENV= "$virtualenv"/bin/activate | sed -E 's/VIRTUAL_ENV="(.*)"$/\1/')
+}
+
+function act() {
+    if [ -n "$1" ]; then
+        if [ ! -d "$1" ]; then
+            echo "act: $1 no such directory"
+            return 1
+        fi
+        if [ ! -e "$1/bin/activate" ]; then
+            echo "act: $1 is not a virtualenv"
+            return 1
+        fi
+
+        if which deactivate > /dev/null; then
+            deactivate
+        fi
+        cd "$1"
+        source bin/activate
+    else
+        virtualenv="$(walkup bin/activate)"
+        if [ $? -eq 1 ]; then
+            echo "act: not in a virtualenv"
+            return 1
+        fi
+        source "$virtualenv"/bin/activate
+    fi
+}
