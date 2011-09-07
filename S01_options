@@ -19,7 +19,7 @@ alias reloadzshrc='source ~/.zshrc'
 
 # make sure vi/vim is always the editor
 if [ -z "$EDITOR" ]; then
-    if [ ! which vim > /dev/null ]; then
+    if ! which vim > /dev/null; then
         export EDITOR=vi
     else
         export EDITOR=vim
