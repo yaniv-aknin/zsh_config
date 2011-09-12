@@ -28,4 +28,5 @@ if [[ $(uname) == "Darwin" ]]; then
     # python that comes from brew
     #export PATH=/usr/local/share/python:$PATH
 
+    alias top='top -o cpu'
 fi
