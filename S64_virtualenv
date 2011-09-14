@@ -15,7 +15,7 @@ function enclosing_virtualenv() {
     if ! which walkup > /dev/null; then
         return
     fi
-    virtualenv="$(walkup bin/activate)"
+    local virtualenv="$(walkup bin/activate)"
     if [ -z "$virtualenv" ]; then
         # not in a virtualenv
         return
@@ -41,7 +41,7 @@ function act() {
         cd "$1"
         source bin/activate
     else
-        virtualenv="$(walkup bin/activate)"
+        local virtualenv="$(walkup bin/activate)"
         if [ $? -eq 1 ]; then
             echo "act: not in a virtualenv"
             return 1
