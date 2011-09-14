@@ -18,3 +18,12 @@ srcgrep() {
 srcgreped() {
     vim -p $(srcgrep "$@" | cut -f1 -d: | sort -u)
 }
+
+gentoken() {
+    if [ -z "$1" ]; then
+        local hexchars=12
+    else
+        local hexchars=$1
+    fi
+    dd if=/dev/urandom bs=32 count=1 2>/dev/null| md5 | cut -c1-$hexchars
+}
