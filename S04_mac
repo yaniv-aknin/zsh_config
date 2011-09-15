@@ -29,4 +29,5 @@ if [[ $(uname) == "Darwin" ]]; then
     #export PATH=/usr/local/share/python:$PATH
 
     alias top='top -o cpu'
+    alias ls='ls -G'
 fi
