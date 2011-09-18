@@ -128,9 +128,7 @@ unset rst bgc
 case $TERM in
 	xterm*)
   		# this updates title bar before prompt is printed
-		  precmd () {
-		    echo  -n \\033\]2\;$USER@$HOST:$_\\07;
-		  }
+		  precmd () { print -Pn '\033];%~\007' }
 
 		  # this updates title bar while command is running
 		  xterm-accept-line () { print -nr -- "]2;$BUFFER"; zle .accept-line; }
