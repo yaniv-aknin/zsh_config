@@ -10,7 +10,7 @@ bindkey ^v edit-command-line
 zle -N edit-command-line
 
 bindkey '^[[H' beginning-of-line
-bindkey '^[[E' end-of-line
+bindkey '^[[F' end-of-line
 bindkey '^[[3~' delete-char
 bindkey '^z' undo
 
