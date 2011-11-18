@@ -1,3 +1,6 @@
 if (ls --version | grep 'GNU coreutils') >/dev/null 2>&1; then
     alias ls='ls --color=auto'
 fi
+if which enqueue > /dev/null; then
+    alias nq=enqueue
+fi
