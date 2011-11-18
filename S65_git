@@ -11,3 +11,4 @@ alias gg="git grep"
 alias gpr="git pull --rebase"
 alias gl='git log --oneline --decorate'
 alias gcontain='git branch --contains '
+alias gamend='[ -n "$(git status --porcelain 2>/dev/null)" ] && git commit --amend -a -C HEAD'

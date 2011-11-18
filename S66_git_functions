@@ -1,7 +1,3 @@
-gamend() {
-    [ -n "$(git status --porcelain 2>/dev/null)" ] && GIT_EDITOR=true git commit --amend -a
-}
-
 parse_git_branch() {
     if [ -z "$_git_status_cache" ]; then
         local _git_status_cache="$(git status -sb 2> /dev/null)"
