@@ -49,3 +49,11 @@ function act() {
         source "$virtualenv"/bin/activate
     fi
 }
+
+function cdv() {
+    if [ -z "$VIRTUAL_ENV" ]; then
+        echo "cdv: not in a virtualenv"
+        return 1
+    fi
+    cd "$VIRTUAL_ENV"/"$1"
+}
