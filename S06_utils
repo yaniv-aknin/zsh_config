@@ -25,5 +25,8 @@ gentoken() {
     else
         local hexchars=$1
     fi
-    dd if=/dev/urandom bs=32 count=1 2>/dev/null| md5 | cut -c1-$hexchars
+    dd if=/dev/urandom bs=32 count=1 2>/dev/null | md5 | cut -c1-$hexchars | # generate random hex chars
+        tr -d '\n' | # remove newline or pbcopy will copy the newline
+        (( pbcopy ) 2>/dev/null || cut -c1- ) # if pbcopy exists, copy to clipboard, else use cut to revive the newline
+    ( pbpaste | cut -c1- ) 2> /dev/null || true # if pbpaste exists, paste what you just copied, else do nothing
 }
