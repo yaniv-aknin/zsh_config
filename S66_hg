@@ -9,16 +9,17 @@ alias hllf='hg -q out --style ~/.hg.d/styles/multiline'
 #alias gc='git clean -X -f -q'
 
 parse_hg_branch() {
-        if ! HG_ROOT=$(fast_hg_root) 2> /dev/null; then
+        local HG_ROOT=$( (walkup .hg | tr : /) 2> /dev/null )
+        if [ -z "$HG_ROOT" ]; then
             # not an HG repository, quit
             return
         fi
-        BOOKMARK=$(cat "$HG_ROOT"/.hg/bookmarks.current 2> /dev/null)
+        BOOKMARK=$(cat "$HG_ROOT"/bookmarks.current 2> /dev/null)
         if [ -n "$BOOKMARK" ]; then
             # have a current bookmark, display that
             echo $BOOKMARK
             return
         fi
         # display the current branch or 'default'
-        cat "$HG_ROOT"/.hg/branch 2> /dev/null || echo 'default'
+        cat "$HG_ROOT"/branch 2> /dev/null || echo 'default'
 }
