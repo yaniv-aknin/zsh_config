@@ -2,26 +2,35 @@
 
 VIRTUAL_ENV_DISABLE_PROMPT=True
 
+function virtualenv_name() {
+    local virtualenv="$1"
+    if echo "$virtualenv" | grep .venv > /dev/null; then
+        basename $(dirname "$virtualenv")
+    else
+        basename "$virtualenv"
+    fi
+}
+
 function active_virtualenv() {
     if [ -z "$VIRTUAL_ENV" ]; then
         # not in a virtualenv
         return
     fi
 
-    basename "$VIRTUAL_ENV"
+    virtualenv_name "$VIRTUAL_ENV"
 }
 
 function enclosing_virtualenv() {
     if ! which walkup > /dev/null; then
         return
     fi
-    local virtualenv="$(walkup bin/activate)"
+    local virtualenv="$(walkup bin/activate .venv/bin/activate | cut -f1 -d:)"
     if [ -z "$virtualenv" ]; then
         # not in a virtualenv
         return
     fi
 
-    basename $(grep VIRTUAL_ENV= "$virtualenv"/bin/activate | sed -E 's/VIRTUAL_ENV="(.*)"$/\1/')
+    virtualenv_name "$virtualenv"
 }
 
 function act() {
@@ -41,19 +50,24 @@ function act() {
         cd "$1"
         source bin/activate
     else
-        local virtualenv="$(walkup bin/activate)"
-        if [ $? -eq 1 ]; then
+        local virtualenv="$(walkup bin/activate .venv/bin/activate | tr : /)"
+        if [ -z "$virtualenv" ]; then
             echo "act: not in a virtualenv"
             return 1
         fi
-        source "$virtualenv"/bin/activate
+        source "$virtualenv"
     fi
 }
 
 function cdv() {
-    if [ -z "$VIRTUAL_ENV" ]; then
+    local virtualenv="$VIRTUAL_ENV"
+    if [ -z "$virtualenv" ]; then
         echo "cdv: not in a virtualenv"
         return 1
     fi
-    cd "$VIRTUAL_ENV"/"$1"
+    if echo $virtualenv | grep .venv > /dev/null; then
+        local virtualenv=$(dirname "$virtualenv")
+    fi
+    
+    cd "$virtualenv"/"$1"
 }

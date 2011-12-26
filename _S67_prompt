@@ -22,8 +22,13 @@ function _lprompt_env {
         local text="$enclosing"
     else
         if [ -z "$enclosing" ]; then
-            local color=yellow
-            local text="$active"
+            if [ -d "$VIRTUAL_ENV" ]; then
+                local color=yellow
+                local text="$active"
+            else
+                local color=magenta
+                local text="$active (deleted)"
+            fi
         elif [ "$enclosing" = "$active" ]; then
             local color=green
             local text="$active"
