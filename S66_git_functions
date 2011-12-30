@@ -2,7 +2,7 @@ parse_git_branch() {
     if [ -z "$_git_status_cache" ]; then
         local _git_status_cache="$(git status -sb 2> /dev/null)"
     fi
-    echo "$_git_status_cache" | head -1 | perl -pe 's/^## ([^\\ ~^:]+).*/\1/'
+    echo "$_git_status_cache" | head -1 | perl -pe 's/^## // ; s/^(.*?)\.{3}.*/\1/'
 }
 
 gll() {
