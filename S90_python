@@ -15,6 +15,10 @@ mkpkg() {
 }
 
 mkvenv() {
+    if [ -d $1 ]; then
+        echo refusing to use existing directory $1
+        return 1
+    fi
     mkdir -p $1
     cd $1
     virtualenv .venv
