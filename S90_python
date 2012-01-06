@@ -36,3 +36,5 @@ function venv_prompt() {
 
 function _complete__fab { reply=(`fab -l -F short`); }
 compctl -K _complete__fab fab
+
+[ -z "$PIP_DOWNLOAD_CACHE" ] && { mkdir -p ~/.pip/cache && export PIP_DOWNLOAD_CACHE=${HOME}/.pip/cache; }
