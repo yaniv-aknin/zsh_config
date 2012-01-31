@@ -15,7 +15,12 @@ alias mv="mv -i"
 export WORDCHARS='*?_-.[]~=&;!#%^(){}<>'
 
 # easy zshrc reload
-alias reloadzshrc='source ~/.zshrc'
+reloadzshrc() {
+    if whence deactivate > /dev/null; then
+        deactivate
+    fi
+    source ~/.zshrc
+}
 
 # make sure vi/vim is always the editor
 if [ -z "$EDITOR" ]; then
