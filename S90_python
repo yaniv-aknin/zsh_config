@@ -10,8 +10,13 @@ cdpy() {
 }
 
 mkpkg() {
-    mkdir -p $1
-    echo >> $1/__init__.py
+    mkdir -p "$1"
+    if [ -e "$1".py ]; then
+        mv "$1".py "$1"/__init__.py
+        rm -f "$1".pyc
+    else
+        touch "$1"/__init__.py
+    fi
 }
 
 mkvenv() {
