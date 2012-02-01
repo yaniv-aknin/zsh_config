@@ -4,3 +4,6 @@ fi
 if which enqueue > /dev/null; then
     alias nq=enqueue
 fi
+if which w3m > /dev/null; then
+    alias html='w3m -T text/html'
+fi
