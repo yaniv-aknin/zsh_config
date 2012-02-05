@@ -19,6 +19,31 @@ http {
 EOF
 }
 
+entertempdir() {
+    tempdir=$(mktemp -d /tmp/playground.XXXXXX)
+    if [ $? -ne 0 ]; then echo "$0: can't create temporary directory"; return 1; fi
+    cd "$tempdir"
+}
+leavetempdir() {
+    cd -
+    echo "Hit [enter] to destroy your playground ($tempdir)"
+    read
+    rm -fr "$tempdir"
+}
+
+safeopen() {
+    if ! which open > /dev/null; then
+        echo "please open $1 and hit [enter]"
+        read
+    else
+        if [ -n "$2" ]; then
+            open -g "$1" -a "$2"
+        else
+            open -g "$1"
+        fi
+    fi
+}
+
 freeport() {
     while true; do
         port=$(($RANDOM+1024))
@@ -28,25 +53,23 @@ freeport() {
     done
 }
 
-playground() {
-    tempdir=$(mktemp -d /tmp/playground.XXXXXX)
-    if [ $? -ne 0 ]; then echo "$0: can't create temporary directory"; return 1; fi
-    cd "$tempdir"
-    cp ~/.zsh.d/static/playground/* .
+_playground() {
+    entertempdir || return 1
+    cp ~/.zsh.d/static/"$1"/* .
     port="$(freeport)"
     mknginxconf "$tempdir" "$port"
     alias nginx='nginx -c "$tempdir"/.nginx.conf'
     nginx -c "$tempdir"/.nginx.conf
-    if ! which open > /dev/null; then
-        echo "direct your browser at http://localhost:$port and hit [enter]"
-        read
-    else
-        open -g "http://localhost:$port"
-    fi
-    vim "$tempdir"/index.html
+    safeopen http://localhost:$port
+    vim "$tempdir"/$2
     nginx -c "$tempdir"/.nginx.conf -s stop
-    cd -
-    echo "Hit [enter] to destroy your playground ($tempdir)"
-    read
-    rm -fr "$tempdir"
+    leavetempdir
+}
+
+playground() {
+    _playground playground index.html
+}
+
+mdplayground() {
+    _playground mdplayground playground.markdown
 }

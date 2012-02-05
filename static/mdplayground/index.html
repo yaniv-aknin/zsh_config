@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Playground</title>
+        <script type="text/javascript" src="jquery-1.7.1.js"></script>
+        <script type="text/javascript" src="markdown.js"></script>
+        <link rel="stylesheet" href="markdown.css">
+        <script type="text/javascript">
+            $(function() {
+                var previous = null;
+                var converter = new Markdown.Converter();
+                function process(data) {
+                    $("body").html(converter.makeHtml(data));
+                }
+                function reload() {
+                    $.ajax(
+                        "playground.markdown",
+                        {
+                            'cache': false
+                        }
+                    ).done(function(data, textStatus, jqXHR) {
+                        if (previous != data) {
+                            previous = data;
+                            process(data);
+                        }
+                    }).always(function() {
+                        setTimeout(reload, 200);
+                    })
+                }
+                reload();
+            })
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
