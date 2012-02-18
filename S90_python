@@ -28,6 +28,12 @@ mkvenv() {
     cd $1
     virtualenv .venv
     act
+    if [ x"$2" = x"+" ]; then
+        pip install $1
+    elif [ -n "$2" ]; then
+        shift
+        pip install "$@"
+    fi
 }
 
 GLOBAL_VIRTUALENV_NAME="__global__"
