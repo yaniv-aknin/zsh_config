@@ -6,4 +6,10 @@ if which enqueue > /dev/null; then
 fi
 if which w3m > /dev/null; then
     alias html='w3m -T text/html'
+    if which pbpaste > /dev/null; then
+        alias phtml='pbpaste | w3m -T text/html'
+    fi
+fi
+if which pbpaste > /dev/null; then
+    alias pghtml='pbpaste > /tmp/.paste.html ; open /tmp/.paste.html'
 fi
