@@ -1,0 +1,8 @@
+phantomcoffee () {                                                                  (10:10:03:teolicy)
+    [ -z "$1" ] && { echo no; return 1; }
+    output="$(coffee -cs < $1)"
+    [ $? -ne 0 ] && return 1
+    echo coffee:
+    echo "$output"
+    phantomjs <(echo "$output")
+}
