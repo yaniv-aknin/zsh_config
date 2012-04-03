@@ -49,3 +49,19 @@ function _complete__fab { reply=(`fab -l -F short`); }
 compctl -K _complete__fab fab
 
 [ -z "$PIP_DOWNLOAD_CACHE" ] && { mkdir -p ~/.pip/cache && export PIP_DOWNLOAD_CACHE=${HOME}/.pip/cache; }
+
+function newpy() {
+    local template_dir="$HOME/.zsh.d/static/newpy"
+    if [ "$1" = "-L" ]; then
+        ls $template_dir
+        return 2
+    fi
+
+    if [ ! -e ${template_dir}/$1.py ]; then
+        ls ${template_dir}/$1.py
+        echo "no such template $1"
+        return 1
+    fi
+
+    cp ${template_dir}/$1.py $2
+}
