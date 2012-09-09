@@ -7,3 +7,35 @@ function zsh_build() {
         make
     fi
 }
+
+function inplace() {
+    if [ "$#" -lt 2 ]; then
+        echo "usage: $0 <filename> <command> [<arg> [<arg> ... ]]"
+        return 2
+    fi
+    if [ ! -f "$1" ]; then
+        echo "$0: $1: no such file"
+        return 1
+    fi
+    filename="$1"
+    shift
+    if ! which "$1" 2>&1 > /dev/null; then
+        echo "$0: $1: command not found"
+        return 1
+    fi
+    tempfile="$(mktemp /tmp/.inplace-XXXXXX)"
+    if [ $? -ne 0 ]; then
+        echo "$0: can't create tempfile"
+        return 1
+    fi
+    "$@" < "$filename" > "$tempfile"
+    if [ $? -ne 0 ]; then
+        echo "$0: command failed; $tempfile remains for your examination"
+        return 1
+    fi
+    mv -f "$tempfile" "$filename" 2>/dev/null # errors could include chown errors since mktemp is setuid
+    if [ $? -ne 0 ]; then
+        echo "$0: mv failed; $tempfile remains for your examination"
+        return 1
+    fi
+}
