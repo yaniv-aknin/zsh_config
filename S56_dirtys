@@ -1,0 +1,13 @@
+dirtys() {
+    if ! which redis-server > /dev/null; then
+        echo no redis, no dirtys
+        return 1
+    fi
+    redis-server - << EOF
+timeout 0
+logfile stdout
+databases 1
+loglevel notice
+requirepass development
+EOF
+}
