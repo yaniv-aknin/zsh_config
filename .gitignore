@@ -1,5 +1,2 @@
 .DS_Store
-*.elc
-emacs/.emacs.d/games
-ssh_config/known_hosts
-src/walkup/walkup
+src/walkup
