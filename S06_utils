@@ -30,3 +30,7 @@ gentoken() {
         (( pbcopy ) 2>/dev/null || cut -c1- ) # if pbcopy exists, copy to clipboard, else use cut to revive the newline
     ( pbpaste | cut -c1- ) 2> /dev/null || true # if pbpaste exists, paste what you just copied, else do nothing
 }
+
+if which pbcopy > /dev/null; then
+    alias -g pbtee='pbcopy ; pbpaste'
+fi
