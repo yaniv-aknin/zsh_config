@@ -7,7 +7,7 @@ alias gsu="git submodule update --init"
 alias gd="git diff --color --ignore-space-at-eol"
 alias gdd="git diff --ignore-space-at-eol --word-diff"
 alias gb="git branch --color -v"
-alias gg="git grep"
+alias gg="git grep --color=auto"
 alias gpr="git pull --rebase"
 alias gl='git log --pretty=format:"%an%x09 : %C(yellow)%h%Creset %C(yellow reverse)%d%Creset: %s"'
 alias gcontain='git branch --contains '
