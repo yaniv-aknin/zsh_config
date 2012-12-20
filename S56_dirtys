@@ -6,7 +6,6 @@ dirtys() {
     redis-server - << EOF
 timeout 0
 logfile stdout
-databases 1
 loglevel notice
 requirepass development
 EOF
