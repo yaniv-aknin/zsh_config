@@ -65,3 +65,5 @@ function newpy() {
 
     cp ${template_dir}/$1.py $2
 }
+
+[ -f /usr/local/opt/mess/bin/activate ] && alias mess="source /usr/local/opt/mess/bin/activate"
