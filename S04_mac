@@ -32,4 +32,5 @@ if [[ $(uname) == "Darwin" ]]; then
     alias ls='ls -G'
 
     [ -d /Applications/Xee.app ] && alias xee='open -Wa /Applications/Xee.app '
+    [ -d /Applications/VLC.app ] && alias cvlc='/Applications/VLC.app/Contents/MacOS/VLC'
 fi
