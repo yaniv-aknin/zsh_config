@@ -31,6 +31,6 @@ gentoken() {
     ( pbpaste | cut -c1- ) 2> /dev/null || true # if pbpaste exists, paste what you just copied, else do nothing
 }
 
-if which pbcopy > /dev/null; then
+if isexe pbcopy; then
     alias -g pbtee='pbcopy ; pbpaste'
 fi

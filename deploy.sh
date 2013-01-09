@@ -13,11 +13,9 @@ mkdir $WORKDIR
 cd $WORKDIR
 curl -Lfs https://github.com/yaniv-aknin/zsh_config/tarball/master | tar zx
 mv yaniv-aknin-zsh_config-* "$TARGET_DIRECTORY"
-if [ "$TARGET_USER" = "$USER" ]; then
-    "$TARGET_DIRECTORY"/install.sh "$TARGET_HOME"
-else
-    sudo -u "$TARGET_USER" -i "$TARGET_DIRECTORY"/install.sh "$TARGET_HOME"
+"$TARGET_DIRECTORY"/install.sh "$TARGET_HOME"
+if [ "$USER" != "$TARGET_USER" ]; then
+    chown -R "$TARGET_USER:$TARGET_GROUP" "$TARGET_DIRECTORY" "$TARGET_HOME"/.zshrc
 fi
-chown -R "$TARGET_USER:$TARGET_GROUP" "$TARGET_DIRECTORY" "$TARGET_HOME"/.zshrc
 rm -fr $WORKDIR
 set +e

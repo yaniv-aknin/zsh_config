@@ -1,5 +1,5 @@
 dirtys() {
-    if ! which redis-server > /dev/null; then
+    if ! isexe redis-server; then
         echo no redis, no dirtys
         return 1
     fi

@@ -32,7 +32,7 @@ leavetempdir() {
 }
 
 safeopen() {
-    if ! which open > /dev/null; then
+    if ! isexe open; then
         echo "please open $1 and hit [enter]"
         read
     else

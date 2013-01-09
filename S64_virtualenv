@@ -21,7 +21,7 @@ function active_virtualenv() {
 }
 
 function enclosing_virtualenv() {
-    if ! which walkup > /dev/null; then
+    if ! isexe walkup; then
         return
     fi
     local virtualenv="$(walkup bin/activate .venv/bin/activate | cut -f1 -d:)"
@@ -44,7 +44,7 @@ function act() {
             return 1
         fi
 
-        if which deactivate > /dev/null; then
+        if isexe deactivate; then
             deactivate
         fi
         cd "$1"

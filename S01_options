@@ -5,6 +5,10 @@ setopt autopushd
 
 autoload zmv
 
+function isexe() {
+    which $1 > /dev/null 2>&1
+}
+
 ## Named directories
 function named_dir(){ eval 'export $1="$2" && hash -d $1="$2"' }
 
@@ -24,7 +28,7 @@ reloadzshrc() {
 
 # make sure vi/vim is always the editor
 if [ -z "$EDITOR" ]; then
-    if ! which vim > /dev/null; then
+    if ! isexe vim; then
         export EDITOR=vi
     else
         export EDITOR=vim

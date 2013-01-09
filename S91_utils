@@ -19,7 +19,7 @@ function inplace() {
     fi
     filename="$1"
     shift
-    if ! which "$1" 2>&1 > /dev/null; then
+    if ! isexe "$1"; then
         echo "$0: $1: command not found"
         return 1
     fi
