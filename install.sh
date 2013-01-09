@@ -3,7 +3,10 @@
 # http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
 
 ZSH_DIR="$( cd "$( dirname "$0" )" && pwd )"
-cat > ~/.zshrc << EOF
+[ -z "$HOME_DIR" ] && HOME_DIR="$1"
+[ -z "$HOME_DIR" ] && HOME_DIR="$HOME"
+
+cat > "$HOME_DIR"/.zshrc << EOF
 ##### Zsh directory ##############################################
 ZSH_DIR="$ZSH_DIR"
 
