@@ -3,10 +3,11 @@ dirtys() {
         echo no redis, no dirtys
         return 1
     fi
+    [ "$1" != "-n" ] && local requirepass="requirepass development"
     redis-server - << EOF
 timeout 0
 logfile stdout
 loglevel notice
-requirepass development
+$requirepass
 EOF
 }
