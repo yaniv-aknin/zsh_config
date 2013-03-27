@@ -22,3 +22,7 @@ gedm() {
     vi -p $(git status --porcelain | cut -c2- | grep ^M | cut -c3- | tr '\n' ' ')
     
 }
+
+gge() {
+    vi -p $(git grep -l "$@")
+}
