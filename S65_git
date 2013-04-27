@@ -10,5 +10,6 @@ alias gb="git branch --color -v"
 alias gg="git grep --color=auto"
 alias gpr="git pull --rebase"
 alias gl='git log --pretty=format:"%an%x09 : %C(yellow)%h%Creset %C(yellow reverse)%d%Creset: %s"'
+alias glf='git log --follow --pretty=format:"%an%x09 : %C(yellow)%h%Creset %C(yellow reverse)%d%Creset: %s"'
 alias gcontain='git branch --contains '
 alias gamend='[ -n "$(git status --porcelain 2>/dev/null)" ] && git commit --amend -a -C HEAD'
