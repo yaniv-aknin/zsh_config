@@ -39,3 +39,7 @@ function inplace() {
         return 1
     fi
 }
+
+function freq() {
+    sort | uniq -c | sort -n
+}
