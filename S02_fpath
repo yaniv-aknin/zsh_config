@@ -1,1 +1,0 @@
-fpath=( $ZSH_DIR/functions $fpath )

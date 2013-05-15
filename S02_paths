@@ -1,0 +1,2 @@
+fpath=( $ZSH_DIR/functions $fpath )
+[ -d "$HOME"/.opt/bin ] && export PATH="$HOME/.opt/bin:$PATH"
