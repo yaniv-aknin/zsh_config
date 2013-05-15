@@ -19,6 +19,10 @@ srcgreped() {
     vim -p $(srcgrep "$@" | cut -f1 -d: | sort -u)
 }
 
+if ! isexe md5; then
+    alias -g md5=md5sum
+fi
+
 gentoken() {
     if [ -z "$1" ]; then
         local hexchars=12
