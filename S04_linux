@@ -1,0 +1,10 @@
+if [[ $(uname) == "Linux" ]]; then
+    if isexe xclip; then
+        alias -g cpcopy="xclip -i"
+        alias -g cppaste="xclip -o"
+        _GOT_CLIPBOARD=1
+    fi
+    if (ls --version | grep 'GNU coreutils') >/dev/null 2>&1; then
+        alias ls='ls --color=auto'
+    fi
+fi

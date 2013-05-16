@@ -19,22 +19,18 @@ srcgreped() {
     vim -p $(srcgrep "$@" | cut -f1 -d: | sort -u)
 }
 
-if ! isexe md5; then
-    alias -g md5=md5sum
-fi
-
 gentoken() {
     if [ -z "$1" ]; then
         local hexchars=12
     else
         local hexchars=$1
     fi
-    dd if=/dev/urandom bs=32 count=1 2>/dev/null | md5 | cut -c1-$hexchars | # generate random hex chars
-        tr -d '\n' | # remove newline or pbcopy will copy the newline
-        (( pbcopy ) 2>/dev/null || cut -c1- ) # if pbcopy exists, copy to clipboard, else use cut to revive the newline
-    ( pbpaste | cut -c1- ) 2> /dev/null || true # if pbpaste exists, paste what you just copied, else do nothing
+    dd if=/dev/urandom bs=32 count=1 2>/dev/null | md5sum | cut -c1-$hexchars | # generate random hex chars
+        tr -d '\n' | # remove newline or cpcopy will copy the newline
+        (( cpcopy ) 2>/dev/null || cut -c1- ) # if cpcopy exists, copy to clipboard, else use cut to revive the newline
+    ( cppaste | cut -c1- ) 2> /dev/null || true # if cppaste exists, paste what you just copied, else do nothing
 }
 
-if isexe pbcopy; then
-    alias -g pbtee='pbcopy ; pbpaste'
+if [ -n "$_GOT_CLIPBOARD" ]; then
+    alias -g cptee='cpcopy ; cppaste'
 fi

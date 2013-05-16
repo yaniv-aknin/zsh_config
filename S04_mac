@@ -33,4 +33,14 @@ if [[ $(uname) == "Darwin" ]]; then
 
     [ -d /Applications/Xee.app ] && alias xee='open -Wa /Applications/Xee.app '
     [ -d /Applications/VLC.app ] && alias cvlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
+    if isexe pbcopy; then
+        alias -g cpcopy=pbcopy
+        alias -g cppaste=pbpaste
+        _GOT_CLIPBOARD=1
+    fi
+
+    if ! isexe md5sum; then
+        alias -g md5sum=md5
+    fi
 fi
