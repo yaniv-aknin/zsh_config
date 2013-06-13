@@ -7,6 +7,10 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias rmpyc='find . -type f -name "*.pyc" -print0 | xargs -0 rm'
 
+function indent() {
+  sed "s/^/   /"
+}
+
 srcgrep() {
     find . ! -path '*/.git/*' \
            ! -path '*myTrash*' \
