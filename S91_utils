@@ -43,3 +43,14 @@ function inplace() {
 function freq() {
     sort | uniq -c | sort -n
 }
+
+function oneline() {
+  local delimeter="$1"
+  [ -z "$delimeter" ] && delimeter=" "
+  tr '\n' "$delimeter" ; echo
+}
+function multiline() {
+  local delimeter="$1"
+  [ -z "$delimeter" ] && delimeter=" "
+  striplines | tr "$delimeter" '\n'
+}
