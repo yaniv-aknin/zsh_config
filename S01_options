@@ -34,3 +34,6 @@ if [ -z "$EDITOR" ]; then
         export EDITOR=vim
     fi
 fi
+
+# ignore commands prefixed with space
+export HIST_IGNORE_SPACE=1
