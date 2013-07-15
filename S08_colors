@@ -12,6 +12,7 @@ function red() { color "01;31" "$@"; }
 function yellow() { color "01;33" "$@"; }
 function blue() { color "01;34" "$@"; }
 function white() { color "01;37" "$@" ; }
+function green() { color "01;32" "$@" ; }
 
 function error() { newline "$(red "$@")"; }
 function warning() { newline "$(yellow "$@")"; }
