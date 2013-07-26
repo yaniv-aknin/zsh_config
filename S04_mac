@@ -43,4 +43,8 @@ if [[ $(uname) == "Darwin" ]]; then
     if ! isexe md5sum; then
         alias -g md5sum=md5
     fi
+
+    function ui-notify() {
+      # should add something growly here
+    }
 fi

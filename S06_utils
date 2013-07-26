@@ -38,3 +38,15 @@ gentoken() {
 if [ -n "$_GOT_CLIPBOARD" ]; then
     alias -g cptee='cpcopy ; cppaste'
 fi
+
+function and_notify() {
+  if [ "$1" = "-m" ]; then
+    shift
+    local message="$1"
+    shift
+  else
+    local message="$1 terminated"
+  fi
+  "$@"
+  ui-notify "$message"
+}
