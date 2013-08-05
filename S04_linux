@@ -11,4 +11,12 @@ if [[ $(uname) == "Linux" ]]; then
     function ui-notify() {
       notify-send "$1"
     }
+
+    function wait_for_pid() {
+      [ -z "$1" ] && return 2
+      printf \[
+      while [ -d /proc/$1 ]; do printf . ; sleep 1 ; done
+      printf \]
+      ui-notify "process $1 exited"
+    }
 fi
