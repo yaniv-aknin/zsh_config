@@ -47,4 +47,8 @@ if [[ $(uname) == "Darwin" ]]; then
     function ui-notify() {
       # should add something growly here
     }
+
+    function audio-play() {
+      # should add something here too
+    }
 fi

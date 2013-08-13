@@ -12,6 +12,12 @@ if [[ $(uname) == "Linux" ]]; then
       notify-send "$1"
     }
 
+    function audio-play() {
+      if which play > /dev/null; then
+        play -q "$1"
+      fi
+    }
+
     function wait_for_pid() {
       [ -z "$1" ] && return 2
       printf \[

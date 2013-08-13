@@ -40,13 +40,19 @@ if [ -n "$_GOT_CLIPBOARD" ]; then
 fi
 
 function and_notify() {
+  local message
   if [ "$1" = "-m" ]; then
     shift
-    local message="$1"
+    message="$1"
     shift
-  else
-    local message="$1 terminated"
   fi
-  "$@"
+  if "$@"; then
+    [ -z "$message" ] && message="$1 succeeded"
+    local sound="~/.zsh.d/static/sounds/information.ogg"
+  else
+    [ -z "$message" ] && message="$1 failed"
+    local sound="~/.zsh.d/static/sounds/error.ogg"
+  fi
   ui-notify "$message"
+  audio-play "$sound"
 }
