@@ -26,3 +26,12 @@ gedm() {
 gge() {
     vi -p $(git grep -l "$@")
 }
+
+git_root_dir() {
+  local git_root
+  if git_root=$(walkup .git); then
+    echo $git_root | cut -f1 -d:
+    return
+  fi
+  return 1
+}
