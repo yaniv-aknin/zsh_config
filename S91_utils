@@ -54,3 +54,12 @@ function multiline() {
   [ -z "$delimeter" ] && delimeter=" "
   striplines | tr "$delimeter" '\n'
 }
+function highlight() {
+  case "$1" in
+    --red) shift ; local _grep_colors="mt=01;31";;
+    --blue) shift ; local _grep_colors="mt=01;34";;
+    --yellow) shift ; local _grep_colors="mt=01;33";;
+    --green) shift ; local _grep_colors="mt=01;32";;
+  esac
+  GREP_COLORS="$_grep_colors" egrep --color=always \(^\|"$1"\)
+}
