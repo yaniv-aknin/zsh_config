@@ -61,5 +61,7 @@ function highlight() {
     --yellow) shift ; local _grep_colors="mt=01;33";;
     --green) shift ; local _grep_colors="mt=01;32";;
   esac
-  GREP_COLORS="$_grep_colors" egrep --color=always \(^\|"$1"\)
+  keyword="$1"
+  shift
+  GREP_COLORS="$_grep_colors" egrep "$@" --color=always \(^\|"$keyword"\)
 }
