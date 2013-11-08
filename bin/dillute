@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+
+import random
+import sys
+
+if len(sys.argv) != 2 or not sys.argv[1].isdigit():
+  print 'usage: %s <denominator>' % sys.argv[0]
+  print
+  print 'randomly dillutes input to 1/denominator of input line'
+
+denominator = int(sys.argv[1])
+for line in sys.stdin:
+  if random.randint(1, denominator) == denominator:
+    sys.stdout.write(line)
