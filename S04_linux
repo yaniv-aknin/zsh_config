@@ -9,7 +9,9 @@ if [[ $(uname) == "Linux" ]]; then
     fi
 
     function ui-notify() {
-      notify-send "$1"
+      if which notify-send > /dev/null; then
+          notify-send "$1"
+      fi
     }
 
     function audio-play() {
