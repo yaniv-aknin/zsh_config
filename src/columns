@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--delimeter', default=' ')
+parser.add_argument('-o', '--output-delimeter', default=' ')
+parser.add_argument('-S', '--no-strip', default=True, dest='strip', action='store_false')
+parser.add_argument('-z', '--zero-base', default=False, action='store_true')
+parser.add_argument('column', nargs='+', type=int)
+options = parser.parse_args()
+
+for line in sys.stdin:
+  if options.strip:
+    line = line.strip()
+  columns = line.split(options.delimeter)
+  output = []
+  for column_index in options.column:
+    output.append(columns[column_index - (0 if options.zero_base else 1)])
+    output.append(options.output_delimeter)
+  output[-1] = '\n' # kinda hacky way to make the last output delimeter a newline
+  sys.stdout.write("".join(output))
