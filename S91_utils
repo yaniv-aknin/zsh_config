@@ -44,6 +44,14 @@ function freq() {
     sort | uniq -c | sort -n
 }
 
+function spacecrush() {
+  sed -e 's/  */ /g'
+}
+
+function linecrush() {
+  grep -v '^$'
+}
+
 function oneline() {
   local delimeter="$1"
   [ -z "$delimeter" ] && delimeter=" "
