@@ -73,3 +73,24 @@ function highlight() {
   shift
   GREP_COLORS="$_grep_colors" egrep "$@" --color=always \(^\|"$keyword"\)
 }
+
+function saneperms() {
+    local dir=${1:-.}
+    local uid=${SANEPERMS_USER:-$UID}
+    local gid=${SANEPERMS_GROUP:-$GID}
+
+    sudo true
+    sudo find . -mindepth 1 -print0 | sudo xargs --null --no-run-if-empty chown $uid:$gid
+    sudo find . -mindepth 1 -type f -print0 | sudo xargs --null --no-run-if-empty chmod 644
+    sudo find . -mindepth 1 -type d -print0 | sudo xargs --null --no-run-if-empty chmod 2755
+}
+
+function rmdsstore() {
+    local dir=${1:-.}
+    find $dir -name '.DS_Store' -delete
+    find $dir -name '._.DS_Store' -delete
+}
+function rmemptydirs() {
+    local dir=${1:-.}
+    find $dir -type d -delete 2>&1 >/dev/null | grep -v 'Directory not empty'
+}
