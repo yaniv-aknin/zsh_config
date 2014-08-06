@@ -43,7 +43,10 @@ function gda {
 	}
 
 	if [ $# -eq 0 ]; then
-            gda_all `git ls-files -m`
+	    OLDIFS=$IFS
+	    IFS=$'\n'
+	    gda_all `git ls-files -m`
+	    IFS=$OLDIFS
 	else
             gda_all "$@"
 	fi
